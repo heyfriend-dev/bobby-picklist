@@ -1,39 +1,18 @@
-exports.handler = async function(event) {
-  const { storeUrl, token, createdAtMin, createdAtMax } = event.queryStringParameters || {};
-
-  if (!storeUrl || !token) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: 'Missing storeUrl or token' })
-    };
-  }
-
-  let url = `https://${storeUrl}/admin/api/2024-01/orders.json?status=open&fulfillment_status=unfulfilled&limit=250`;
-  if (createdAtMin) url += `&created_at_min=${createdAtMin}`;
-  if (createdAtMax) url += `&created_at_max=${createdAtMax}`;
-
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'X-Shopify-Access-Token': token,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const data = await response.json();
-
-    return {
-      statusCode: response.status,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify(data)
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: err.message })
-    };
-  }
-};
+bobby.
+DAILY PICK LIST
+CONNECT SHOPIFY
+Enter your store credentials once. They'll be saved locally so you don't have to re-enter each morning.
+SHOPIFY STORE URL
+Just the domain, no https://
+ADMIN API ACCESS TOKEN
+Create a private app in Shopify Admin → Settings → Apps → Develop apps. Needs read_orders + read_products scopes.
+DAILY CUT-OFF TIME (AEST)
+        12:00 PM (Midday)
+        1:00 PM
+        2:00 PM
+        3:00 PM
+        4:00 PM
+        5:00 PM
+      
+Orders placed before this time today will appear on the pick list. After cut-off, tomorrow's run begins.
+PULL ORDERS
