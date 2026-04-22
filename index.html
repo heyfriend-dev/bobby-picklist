@@ -183,7 +183,7 @@
     if (isAfterCutoff) { windowStart = cutoffUTC; windowEnd = nowUTC; windowLabel = `after ${cutoff} AEST (next run)`; }
     else { windowStart = startUTC; windowEnd = cutoffUTC; windowLabel = `today up to ${cutoff} AEST`; }
     credentials._windowLabel = windowLabel; credentials._isAfterCutoff = isAfterCutoff; credentials._cutoffStr = cutoff;
-    const params = new URLSearchParams({ storeUrl, token, createdAtMin: windowStart.toISOString(), createdAtMax: windowEnd.toISOString() });
+    const params = new URLSearchParams({ storeUrl, token });
     const res = await fetch(`/.netlify/functions/shopify-proxy?${params}`);
     if (!res.ok) {
       if (res.status === 401) throw new Error('Invalid API token. Check your credentials.');
