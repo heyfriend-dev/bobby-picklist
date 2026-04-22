@@ -6,81 +6,81 @@
 <title>bobby — pick list</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Bebas+Neue&display=swap');
-  :root { --black: #0a0a0a; --white: #f5f5f0; --red: #e8251a; --grey: #888; --light-grey: #ddd; --border: #e0e0d8; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--white); color: var(--black); font-family: 'DM Mono', monospace; min-height: 100vh; }
-  #setup-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; }
-  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 72px; letter-spacing: 6px; color: var(--black); line-height: 1; margin-bottom: 6px; }
-  .logo span { color: var(--red); }
-  .tagline { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 48px; }
-  .setup-card { background: white; border: 1px solid var(--border); padding: 40px; width: 100%; max-width: 480px; }
-  .setup-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; margin-bottom: 6px; }
-  .setup-card p { font-size: 11px; color: var(--grey); margin-bottom: 32px; line-height: 1.6; }
-  .field { margin-bottom: 20px; }
-  label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 8px; }
-  input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); background: var(--white); font-family: 'DM Mono', monospace; font-size: 13px; color: var(--black); outline: none; transition: border-color 0.15s; }
-  input:focus { border-color: var(--black); }
-  input::placeholder { color: var(--light-grey); }
-  .help-text { font-size: 10px; color: var(--grey); margin-top: 6px; line-height: 1.5; }
-  .btn-primary { width: 100%; padding: 14px; background: var(--black); color: white; border: none; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
-  .btn-primary:hover { background: var(--red); }
-  .btn-primary:disabled { background: var(--grey); cursor: not-allowed; }
-  .error-msg { background: #fff0ef; border: 1px solid #f5c0bc; padding: 12px 14px; font-size: 12px; color: var(--red); margin-bottom: 20px; display: none; }
-  .saved-badge { display: inline-block; font-size: 10px; letter-spacing: 1px; color: #2a9d5c; background: #e8f5ee; padding: 3px 8px; margin-left: 8px; vertical-align: middle; }
-  #picklist-screen { display: none; min-height: 100vh; padding: 0; }
-  .top-bar { background: var(--black); color: white; padding: 0 40px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .top-bar-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; }
-  .top-bar-logo span { color: var(--red); }
-  .top-bar-actions { display: flex; gap: 12px; align-items: center; }
-  .btn-sm { padding: 7px 16px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; border: 1px solid rgba(255,255,255,0.3); background: transparent; color: white; transition: all 0.15s; }
-  .btn-sm:hover { border-color: white; background: rgba(255,255,255,0.1); }
-  .btn-sm.red { background: var(--red); border-color: var(--red); }
-  .btn-sm.red:hover { background: #c01c12; border-color: #c01c12; }
-  .main-content { max-width: 900px; margin: 0 auto; padding: 40px 40px 80px; }
-  .run-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid var(--black); }
-  .run-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; line-height: 1; }
-  .run-meta { text-align: right; font-size: 11px; color: var(--grey); line-height: 1.8; }
-  .run-meta strong { color: var(--black); font-weight: 500; }
-  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
-  .stat-box { border: 1px solid var(--border); padding: 20px; background: white; }
-  .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); margin-bottom: 8px; }
-  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; line-height: 1; color: var(--black); }
-  .stat-value.red { color: var(--red); }
-  .section-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; }
-  .pick-table { width: 100%; border-collapse: collapse; margin-bottom: 48px; }
-  .pick-table th { text-align: left; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--grey); padding: 10px 16px; border-bottom: 2px solid var(--black); font-weight: 400; }
-  .pick-table th.right { text-align: right; }
-  .pick-table td { padding: 18px 16px; border-bottom: 1px solid var(--border); font-size: 14px; vertical-align: middle; }
-  .pick-table tr:last-child td { border-bottom: none; }
-  .pick-table tr:hover td { background: #f9f9f6; }
-  .sku-name { font-size: 16px; font-weight: 500; letter-spacing: 0.5px; }
-  .sku-variant { font-size: 11px; color: var(--grey); margin-top: 2px; }
-  .qty-cell { text-align: right; font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; color: var(--black); white-space: nowrap; }
-  .qty-unit { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--grey); font-weight: 300; margin-left: 4px; }
-  .check-cell { width: 48px; text-align: center; }
-  .check-box { width: 28px; height: 28px; border: 2px solid var(--light-grey); display: inline-block; cursor: pointer; position: relative; transition: all 0.15s; vertical-align: middle; }
-  .check-box:hover { border-color: var(--black); }
-  .check-box.checked { background: var(--black); border-color: var(--black); }
-  .check-box.checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 14px; }
-  tr.picked .sku-name, tr.picked .sku-variant, tr.picked .qty-cell { opacity: 0.35; text-decoration: line-through; }
-  .orders-section { margin-top: 48px; }
-  .order-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 12px; }
-  .order-row:first-of-type { border-top: 1px solid var(--border); }
-  .order-num { font-weight: 500; color: var(--black); }
-  .order-customer { color: var(--grey); margin-left: 12px; }
-  .order-items { color: var(--grey); font-size: 11px; text-align: right; }
-  .order-tag { display: inline-block; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; margin-left: 8px; background: #f0f0ea; color: var(--grey); }
-  .order-tag.sub { background: #e8f0ff; color: #3a5bbf; }
-  .loading-state { text-align: center; padding: 80px 40px; }
-  .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--black); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-state p { font-size: 12px; color: var(--grey); letter-spacing: 1px; }
-  .empty-state { text-align: center; padding: 80px 40px; }
-  .empty-state .big { font-family: 'Bebas Neue', sans-serif; font-size: 80px; color: var(--border); }
-  .empty-state p { font-size: 13px; color: var(--grey); margin-top: 12px; }
-  @media print { .top-bar, .btn-sm, .check-box, .top-bar-actions { display: none !important; } .main-content { padding: 20px; max-width: 100%; } #setup-screen { display: none !important; } #picklist-screen { display: block !important; } }
-  .reset-link { font-size: 10px; letter-spacing: 1px; color: rgba(255,255,255,0.4); cursor: pointer; text-decoration: none; text-transform: uppercase; margin-right: 4px; }
-  .reset-link:hover { color: white; }
+  :root{--black:#0a0a0a;--white:#f5f5f0;--red:#e8251a;--grey:#888;--light-grey:#ddd;--border:#e0e0d8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--white);color:var(--black);font-family:'DM Mono',monospace;min-height:100vh}
+  #setup-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:6px;color:var(--black);line-height:1;margin-bottom:6px}
+  .logo span{color:var(--red)}
+  .tagline{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:48px}
+  .setup-card{background:white;border:1px solid var(--border);padding:40px;width:100%;max-width:480px}
+  .setup-card h2{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:6px}
+  .setup-card p{font-size:11px;color:var(--grey);margin-bottom:32px;line-height:1.6}
+  .field{margin-bottom:20px}
+  label{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+  input{width:100%;padding:12px 14px;border:1px solid var(--border);background:var(--white);font-family:'DM Mono',monospace;font-size:13px;color:var(--black);outline:none;transition:border-color .15s}
+  input:focus{border-color:var(--black)}
+  input::placeholder{color:var(--light-grey)}
+  .help-text{font-size:10px;color:var(--grey);margin-top:6px;line-height:1.5}
+  .btn-primary{width:100%;padding:14px;background:var(--black);color:white;border:none;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;margin-top:8px;transition:background .15s}
+  .btn-primary:hover{background:var(--red)}
+  .btn-primary:disabled{background:var(--grey);cursor:not-allowed}
+  .error-msg{background:#fff0ef;border:1px solid #f5c0bc;padding:12px 14px;font-size:12px;color:var(--red);margin-bottom:20px;display:none}
+  .saved-badge{display:inline-block;font-size:10px;letter-spacing:1px;color:#2a9d5c;background:#e8f5ee;padding:3px 8px;margin-left:8px;vertical-align:middle}
+  #picklist-screen{display:none;min-height:100vh;padding:0}
+  .top-bar{background:var(--black);color:white;padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .top-bar-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px}
+  .top-bar-logo span{color:var(--red)}
+  .top-bar-actions{display:flex;gap:12px;align-items:center}
+  .btn-sm{padding:7px 16px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;border:1px solid rgba(255,255,255,.3);background:transparent;color:white;transition:all .15s}
+  .btn-sm:hover{border-color:white;background:rgba(255,255,255,.1)}
+  .btn-sm.red{background:var(--red);border-color:var(--red)}
+  .btn-sm.red:hover{background:#c01c12;border-color:#c01c12}
+  .main-content{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+  .run-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--black)}
+  .run-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:3px;line-height:1}
+  .run-meta{text-align:right;font-size:11px;color:var(--grey);line-height:1.8}
+  .run-meta strong{color:var(--black);font-weight:500}
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+  .stat-box{border:1px solid var(--border);padding:20px;background:white}
+  .stat-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+  .stat-value{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;line-height:1;color:var(--black)}
+  .stat-value.red{color:var(--red)}
+  .section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:16px}
+  .pick-table{width:100%;border-collapse:collapse;margin-bottom:48px}
+  .pick-table th{text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);padding:10px 16px;border-bottom:2px solid var(--black);font-weight:400}
+  .pick-table th.right{text-align:right}
+  .pick-table td{padding:18px 16px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+  .pick-table tr:last-child td{border-bottom:none}
+  .pick-table tr:hover td{background:#f9f9f6}
+  .sku-name{font-size:16px;font-weight:500;letter-spacing:.5px}
+  .sku-variant{font-size:11px;color:var(--grey);margin-top:2px}
+  .qty-cell{text-align:right;font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;color:var(--black);white-space:nowrap}
+  .qty-unit{font-size:12px;font-family:'DM Mono',monospace;color:var(--grey);font-weight:300;margin-left:4px}
+  .check-cell{width:48px;text-align:center}
+  .check-box{width:28px;height:28px;border:2px solid var(--light-grey);display:inline-block;cursor:pointer;position:relative;transition:all .15s;vertical-align:middle}
+  .check-box:hover{border-color:var(--black)}
+  .check-box.checked{background:var(--black);border-color:var(--black)}
+  .check-box.checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:14px}
+  tr.picked .sku-name,tr.picked .sku-variant,tr.picked .qty-cell{opacity:.35;text-decoration:line-through}
+  .orders-section{margin-top:48px}
+  .order-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);font-size:12px}
+  .order-row:first-of-type{border-top:1px solid var(--border)}
+  .order-num{font-weight:500;color:var(--black)}
+  .order-customer{color:var(--grey);margin-left:12px}
+  .order-items{color:var(--grey);font-size:11px;text-align:right}
+  .order-tag{display:inline-block;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;margin-left:8px;background:#f0f0ea;color:var(--grey)}
+  .order-tag.sub{background:#e8f0ff;color:#3a5bbf}
+  .loading-state{text-align:center;padding:80px 40px}
+  .spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--black);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-state p{font-size:12px;color:var(--grey);letter-spacing:1px}
+  .empty-state{text-align:center;padding:80px 40px}
+  .empty-state .big{font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--border)}
+  .empty-state p{font-size:13px;color:var(--grey);margin-top:12px}
+  @media print{.top-bar,.btn-sm,.check-box,.top-bar-actions{display:none!important}.main-content{padding:20px;max-width:100%}#setup-screen{display:none!important}#picklist-screen{display:block!important}}
+  .reset-link{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.4);cursor:pointer;text-decoration:none;text-transform:uppercase;margin-right:4px}
+  .reset-link:hover{color:white}
 </style>
 </head>
 <body>
@@ -131,100 +131,78 @@
   </div>
 </div>
 <script>
-  let credentials = {};
-  let allOrders = [];
-  window.onload = () => {
-    const saved = localStorage.getItem('bobby_creds');
-    if (saved) {
-      credentials = JSON.parse(saved);
-      document.getElementById('store-url').value = credentials.storeUrl || '';
-      document.getElementById('api-token').value = credentials.token || '';
-      document.getElementById('cutoff-time').value = credentials.cutoff || '14:00';
-      document.getElementById('token-saved').style.display = 'inline-block';
-      showPicklist();
-      loadOrders();
+  let credentials={},allOrders=[];
+  window.onload=()=>{
+    const saved=localStorage.getItem('bobby_creds');
+    if(saved){
+      credentials=JSON.parse(saved);
+      document.getElementById('store-url').value=credentials.storeUrl||'';
+      document.getElementById('api-token').value=credentials.token||'';
+      document.getElementById('cutoff-time').value=credentials.cutoff||'14:00';
+      document.getElementById('token-saved').style.display='inline-block';
+      showPicklist();loadOrders();
     }
   };
-  async function connect() {
-    const storeUrl = document.getElementById('store-url').value.trim().replace(/^https?:\/\//, '').replace(/\/$/, '');
-    const token = document.getElementById('api-token').value.trim();
-    const cutoff = document.getElementById('cutoff-time').value;
-    const btn = document.getElementById('connect-btn');
-    const errEl = document.getElementById('error-msg');
-    if (!storeUrl || !token) { showError('Enter both your store URL and API token.'); return; }
-    btn.disabled = true; btn.textContent = 'CONNECTING...'; errEl.style.display = 'none';
-    credentials = { storeUrl, token, cutoff };
-    localStorage.setItem('bobby_creds', JSON.stringify(credentials));
-    showPicklist();
-    await loadOrders();
-    btn.disabled = false; btn.textContent = 'PULL ORDERS';
+  async function connect(){
+    const storeUrl=document.getElementById('store-url').value.trim().replace(/^https?:\/\//,'').replace(/\/$/,'');
+    const token=document.getElementById('api-token').value.trim();
+    const cutoff=document.getElementById('cutoff-time').value;
+    const btn=document.getElementById('connect-btn');
+    const errEl=document.getElementById('error-msg');
+    if(!storeUrl||!token){showError('Enter both your store URL and API token.');return;}
+    btn.disabled=true;btn.textContent='CONNECTING...';errEl.style.display='none';
+    credentials={storeUrl,token,cutoff};
+    localStorage.setItem('bobby_creds',JSON.stringify(credentials));
+    showPicklist();await loadOrders();
+    btn.disabled=false;btn.textContent='PULL ORDERS';
   }
-  function showError(msg) { const el = document.getElementById('error-msg'); el.textContent = msg; el.style.display = 'block'; }
-  function showPicklist() { document.getElementById('setup-screen').style.display = 'none'; document.getElementById('picklist-screen').style.display = 'block'; }
-  function resetSettings() { document.getElementById('setup-screen').style.display = 'flex'; document.getElementById('picklist-screen').style.display = 'none'; }
-  async function loadOrders() {
-    renderLoading();
-    try { const orders = await fetchAllUnfulfilledOrders(); allOrders = orders; renderPicklist(orders); }
-    catch (err) { renderError(err.message); }
-  }
-  function refreshOrders() { loadOrders(); }
-  async function fetchAllUnfulfilledOrders() {
-    const { storeUrl, token, cutoff } = credentials;
-    const [cutoffHour, cutoffMin] = (cutoff || '14:00').split(':').map(Number);
-    const nowUTC = new Date();
-    const aestOffset = 10 * 60 * 60 * 1000;
-    const nowAEST = new Date(nowUTC.getTime() + aestOffset);
-    const todayAEST = new Date(nowAEST); todayAEST.setUTCHours(0, 0, 0, 0);
-    const startUTC = new Date(todayAEST.getTime() - aestOffset);
-    const cutoffAEST = new Date(todayAEST); cutoffAEST.setUTCHours(cutoffHour, cutoffMin, 0, 0);
-    const cutoffUTC = new Date(cutoffAEST.getTime() - aestOffset);
-    const isAfterCutoff = nowUTC >= cutoffUTC;
-    let windowStart, windowEnd, windowLabel;
-    if (isAfterCutoff) { windowStart = cutoffUTC; windowEnd = nowUTC; windowLabel = `after ${cutoff} AEST (next run)`; }
-    else { windowStart = startUTC; windowEnd = cutoffUTC; windowLabel = `today up to ${cutoff} AEST`; }
-    credentials._windowLabel = windowLabel; credentials._isAfterCutoff = isAfterCutoff; credentials._cutoffStr = cutoff;
-    const params = new URLSearchParams({ storeUrl, token });
-    const res = await fetch(`/.netlify/functions/shopify-proxy?${params}`);
-    if (!res.ok) {
-      if (res.status === 401) throw new Error('Invalid API token. Check your credentials.');
-      if (res.status === 404) throw new Error('Store not found. Check your store URL.');
+  function showError(msg){const el=document.getElementById('error-msg');el.textContent=msg;el.style.display='block';}
+  function showPicklist(){document.getElementById('setup-screen').style.display='none';document.getElementById('picklist-screen').style.display='block';}
+  function resetSettings(){document.getElementById('setup-screen').style.display='flex';document.getElementById('picklist-screen').style.display='none';}
+  async function loadOrders(){renderLoading();try{const orders=await fetchAllUnfulfilledOrders();allOrders=orders;renderPicklist(orders);}catch(err){renderError(err.message);}}
+  function refreshOrders(){loadOrders();}
+  async function fetchAllUnfulfilledOrders(){
+    const{storeUrl,token}=credentials;
+    const params=new URLSearchParams({storeUrl,token});
+    const res=await fetch(`/functions/shopify-proxy?${params}`);
+    if(!res.ok){
+      if(res.status===401)throw new Error('Invalid API token.');
+      if(res.status===404)throw new Error('Store not found. Check your store URL.');
       throw new Error(`Error ${res.status}. Check your API scopes (needs read_orders).`);
     }
-    const data = await res.json();
-    return data.orders || [];
+    const data=await res.json();
+    return data.orders||[];
   }
-  function renderLoading() { document.getElementById('picklist-content').innerHTML = '<div class="loading-state"><div class="spinner"></div><p>PULLING ORDERS...</p></div>'; }
-  function renderError(msg) { document.getElementById('picklist-content').innerHTML = `<div class="empty-state"><div class="big">!</div><p style="color:#e8251a">${msg}</p></div>`; }
-  function renderPicklist(orders) {
-    if (orders.length === 0) { document.getElementById('picklist-content').innerHTML = '<div class="empty-state"><div class="big">0</div><p>No unfulfilled orders. All caught up.</p></div>'; return; }
-    const skuMap = {}; let totalUnits = 0;
-    orders.forEach(order => {
-      (order.line_items || []).forEach(item => {
-        if (item.fulfillable_quantity === 0) return;
-        const key = item.sku || item.variant_id || item.title;
-        const qty = item.fulfillable_quantity || item.quantity;
-        totalUnits += qty;
-        if (!skuMap[key]) skuMap[key] = { sku: item.sku || '—', name: item.title, variant: item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '', qty: 0 };
-        skuMap[key].qty += qty;
+  function renderLoading(){document.getElementById('picklist-content').innerHTML='<div class="loading-state"><div class="spinner"></div><p>PULLING ORDERS...</p></div>';}
+  function renderError(msg){document.getElementById('picklist-content').innerHTML=`<div class="empty-state"><div class="big">!</div><p style="color:#e8251a">${msg}</p></div>`;}
+  function renderPicklist(orders){
+    if(orders.length===0){document.getElementById('picklist-content').innerHTML='<div class="empty-state"><div class="big">0</div><p>No unfulfilled orders. All caught up.</p></div>';return;}
+    const skuMap={};let totalUnits=0;
+    orders.forEach(order=>{
+      (order.line_items||[]).forEach(item=>{
+        if(item.fulfillable_quantity===0)return;
+        const key=item.sku||item.variant_id||item.title;
+        const qty=item.fulfillable_quantity||item.quantity;
+        totalUnits+=qty;
+        if(!skuMap[key])skuMap[key]={sku:item.sku||'—',name:item.title,variant:item.variant_title&&item.variant_title!=='Default Title'?item.variant_title:'',qty:0};
+        skuMap[key].qty+=qty;
       });
     });
-    const skus = Object.values(skuMap).sort((a, b) => b.qty - a.qty);
-    const aestTime = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Melbourne', dateStyle: 'full', timeStyle: 'short' });
-    const subOrders = orders.filter(o => (o.tags||'').toLowerCase().includes('subscription') || (o.source_name||'').toLowerCase().includes('recharge'));
-    const { _isAfterCutoff: isAfterCutoff, _windowLabel: windowLabel, _cutoffStr: cutoffStr } = credentials;
-    document.getElementById('picklist-content').innerHTML = `
-      ${isAfterCutoff ? `<div style="background:#fff8e1;border:1px solid #ffe082;padding:12px 18px;margin-bottom:24px;font-size:12px;color:#7a5c00;">⚠ Past ${cutoffStr} cut-off — tomorrow's run is building.</div>` : ''}
-      <div class="run-header"><div class="run-title">PICK RUN</div><div class="run-meta"><div>${aestTime}</div><div style="color:var(--grey);font-size:10px;text-transform:uppercase;margin-top:2px">${windowLabel}</div><div style="margin-top:6px"><strong>${orders.length}</strong> orders</div><div><strong>${skus.length}</strong> SKUs</div></div></div>
+    const skus=Object.values(skuMap).sort((a,b)=>b.qty-a.qty);
+    const aestTime=new Date().toLocaleString('en-AU',{timeZone:'Australia/Melbourne',dateStyle:'full',timeStyle:'short'});
+    const subOrders=orders.filter(o=>(o.tags||'').toLowerCase().includes('subscription')||(o.source_name||'').toLowerCase().includes('recharge'));
+    document.getElementById('picklist-content').innerHTML=`
+      <div class="run-header"><div class="run-title">PICK RUN</div><div class="run-meta"><div>${aestTime}</div><div style="margin-top:6px"><strong>${orders.length}</strong> orders</div><div><strong>${skus.length}</strong> SKUs</div></div></div>
       <div class="stats-row"><div class="stat-box"><div class="stat-label">Total Orders</div><div class="stat-value">${orders.length}</div></div><div class="stat-box"><div class="stat-label">Total Units</div><div class="stat-value red">${totalUnits}</div></div><div class="stat-box"><div class="stat-label">Subscriptions</div><div class="stat-value">${subOrders.length}</div></div></div>
       <div class="section-label">Pick by SKU — pick all of one SKU before moving to the next</div>
       <table class="pick-table"><thead><tr><th>SKU / PRODUCT</th><th class="right">UNITS TO PICK</th><th class="right" style="width:60px">DONE</th></tr></thead><tbody>
-      ${skus.map((s,i) => `<tr id="row-${i}"><td><div class="sku-name">${s.name}</div>${s.variant?`<div class="sku-variant">${s.variant}</div>`:''}<div class="sku-variant" style="margin-top:4px;font-size:10px;text-transform:uppercase;color:#bbb">${s.sku}</div></td><td class="qty-cell">${s.qty}<span class="qty-unit">units</span></td><td class="check-cell"><div class="check-box" id="check-${i}" onclick="toggleCheck(${i})"></div></td></tr>`).join('')}
+      ${skus.map((s,i)=>`<tr id="row-${i}"><td><div class="sku-name">${s.name}</div>${s.variant?`<div class="sku-variant">${s.variant}</div>`:''}<div class="sku-variant" style="margin-top:4px;font-size:10px;text-transform:uppercase;color:#bbb">${s.sku}</div></td><td class="qty-cell">${s.qty}<span class="qty-unit">units</span></td><td class="check-cell"><div class="check-box" id="check-${i}" onclick="toggleCheck(${i})"></div></td></tr>`).join('')}
       </tbody></table>
       <div class="orders-section"><div class="section-label">Order breakdown</div>
-      ${orders.map(order => { const items=(order.line_items||[]).filter(i=>i.fulfillable_quantity>0).map(i=>`${i.fulfillable_quantity}x ${i.title}${i.variant_title&&i.variant_title!=='Default Title'?' ('+i.variant_title+')':''}`).join(', '); const isSub=(order.tags||'').toLowerCase().includes('subscription')||(order.source_name||'').toLowerCase().includes('recharge'); const name=order.shipping_address?`${order.shipping_address.first_name} ${order.shipping_address.last_name}`:order.email||'—'; return `<div class="order-row"><div><span class="order-num">#${order.order_number}</span><span class="order-customer">${name}</span>${isSub?'<span class="order-tag sub">SUB</span>':'<span class="order-tag">ONE-OFF</span>'}</div><div class="order-items">${items}</div></div>`; }).join('')}
+      ${orders.map(order=>{const items=(order.line_items||[]).filter(i=>i.fulfillable_quantity>0).map(i=>`${i.fulfillable_quantity}x ${i.title}${i.variant_title&&i.variant_title!=='Default Title'?' ('+i.variant_title+')':''}`).join(', ');const isSub=(order.tags||'').toLowerCase().includes('subscription')||(order.source_name||'').toLowerCase().includes('recharge');const name=order.shipping_address?`${order.shipping_address.first_name} ${order.shipping_address.last_name}`:order.email||'—';return`<div class="order-row"><div><span class="order-num">#${order.order_number}</span><span class="order-customer">${name}</span>${isSub?'<span class="order-tag sub">SUB</span>':'<span class="order-tag">ONE-OFF</span>'}</div><div class="order-items">${items}</div></div>`;}).join('')}
       </div>`;
   }
-  function toggleCheck(i) { document.getElementById(`check-${i}`).classList.toggle('checked'); document.getElementById(`row-${i}`).classList.toggle('picked'); }
+  function toggleCheck(i){document.getElementById(`check-${i}`).classList.toggle('checked');document.getElementById(`row-${i}`).classList.toggle('picked');}
 </script>
 </body>
 </html>
